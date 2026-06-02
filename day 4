@@ -1,0 +1,53 @@
+day 4 (did not commited the chages before , starting now)
+
+##PACKAGES##
+learned how to work with java package system 
+in java, package is folders where we can manage and store code 
+
+to access to the particular class in java we use [name of main package].[what inside this package].[]... and so on until we didnt reach 
+the class we wanna use 
+
+##ACCESS MODIFIERS##
+in this section i learned what exacly means the key words like public ,private, protected 
+and where we can reach or access with this keywords 
+this modifiers can apply to variables and methods 
+
+private -- can be accessed only in the class 
+public -- can be accessed everywhere 
+protected -- cant be accessed in the different packages direcly, but can access througth inherinting the class 
+
+interesting facts 
+-- cant have two different public classes in one file , but we alwayse have to try call our class public 
+-- try to keep instanse variable private 
+-- do not use defaulte modifier 
+
+
+##SUPER AND THIS##
+also leaned that any class have its own super class that we can access with super() in the child class 
+even parent class is inheritet from the Object class 
+this() method can instatiate the class itself 
+
+
+##OVERRIDING AND OVERLOADING##
+overloading -- its when we have same name of behaviour , but different parameter 
+overriding -- its when the child class change the bahaviour , but ask for same pararmeter and have the same name 
+
+## Polymorphism ## 
+polymorphism means many behaviour 
+it changge the execution based on situation 
+1) compile time -- when the comiler make firs check of code, and there compiler spend time checking that method overloading to use
+add(int n , int n1) or add(int n, int n1, int n2) 
+Проверка синтаксиса: Компилятор ищет пропущенные точки с запятой, забытые скобки или опечатки в ключевых словах.
+
+Контроль типов (Type Checking): Java проверяет, правильно ли вы используете типы.
+Если попытаться записать строку в переменную int, компилятор выдаст ошибку.
+
+Связывание (Compile-time Polymorphism): Компилятор решает, какой именно метод вызвать, основываясь на типе переменной и аргументах. 
+Это называется перегрузкой методов (Method Overloading).
+
+2) method overriding it time spent executing the method itself -- runtime 
+add(int n, int n1) {} // logic inside 
+add(int n, int n1) {} // another logic inside 
+
+## TO implement RUNTIME POLYMORPHISM we will discuss the DYNAMIC METHOD DISPATH ##
+
