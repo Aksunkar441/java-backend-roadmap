@@ -51,3 +51,51 @@ add(int n, int n1) {} // another logic inside
 
 ## TO implement RUNTIME POLYMORPHISM we will discuss the DYNAMIC METHOD DISPATH ##
 
+dynamic method dispatch -- it is operation for the implementing the polymorphism in java 
+since java have two state of implementing the code itself like compiler time and runtime execution in the java we 
+allowed to write the code like this 
+
+##CODE
+class A
+{
+  public void say()
+    {
+      System.out.println("SAY A");
+    }
+}
+
+
+class B extends A
+{
+  public void say()
+    {
+      System.out.println("SAY B");
+    }
+  public void call()
+    {
+      System.out.println("B's unique method");
+    }
+}
+
+in the main static method method 
+A obj = new A();
+obj.say(); // --> SAY A
+
+obj = new B();
+obj.say(); // --> SAY B
+##CODE
+
+in the stage of compiler time the compiler only check wether the A class have method say() and in advance give the index of method
+in our case it is 0 
+
+after that works runtime:
+
+the thing behind is that after we created the class ,every method of this class are writen in the vtable 
+with index
+for the class A:      for the class B:
+index 0 -- say()      index 0 -- say() , index 1 -- call()
+
+and runtime find the right method in the right class using the index that were given by compiler and find right method using vtable
+= new [class name] give the right class to search to find appropriate method 
+                    
+
