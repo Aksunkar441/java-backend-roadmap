@@ -1,0 +1,188 @@
+day 5 
+
+##FINAL KEYWORD##
+
+can be used with -- variable,method and class
+VARIABLES usage of final:
+final int a = 9;
+a = 8; // -- cant be changed 
+
+METHOD usage of final:
+class A 
+{
+  final void notOverrideIt() // -- if we dont want to another class to override this method 
+  {
+    System.out.println("UNCHANGABLE INFO");
+  }
+}
+
+CLASS usage of final:
+final class Calc 
+{
+  void add(int n1, int n2 )
+  {
+    System.out.println(n1 + n2);
+  }
+}
+
+class AdvCalc extends Calc // cant inherit the Calc becouse it final
+{
+
+}
+
+
+## OBJECT CLASS ##
+Object class is the class that , all classes thaat you create is inherited 
+it have different mehtod inside , so when you create a class , you will authomatically have a some method 
+that you can basically override:
+toString() -- return ClassName@HashCode
+
+equals(Object obj) -- Compares the memory addresses of two objects to see if they are the same instance.
+You can override it to compare actual field data.
+
+hashCode() -- Returns a unique integer value (hash code) associated with the object memory reference,
+heavily used in structures like HashMap
+
+getClass(), clone(), wait(), notify(), notifyAll(), finalize()
+
+## Object polymorphic holder ##
+We use an Object polymorphic holder when a variable, method, or collection needs to handle different,
+unrelated data types at the same time.
+examples are : 
+------------------------------------------------------
+// Legacy ArrayList used Object arrays internally
+ArrayList list = new ArrayList(); 
+list.add("Hello");     // String treated as Object
+list.add(2026);        // Integer treated as Object
+
+// You must explicitly cast it back to use it
+String str = (String) list.get(0); 
+--------------------------------------------------------
+// A row in a database table or Excel sheet
+Object[] databaseRow = new Object[3];
+databaseRow[0] = 101;                // ID (Integer)
+databaseRow[1] = "Alice Smith";      // Name (String)
+databaseRow[2] = true;               // Active status (Boolean)
+----------------------------------------------------------
+Creating Highly Flexible Methods
+public void printLog(Object message) {
+    // Accepts strings, dates, numbers, or custom objects
+    System.out.println("LOG [" + System.currentTimeMillis() + "]: " + message.toString());
+}
+----------------------------------------------------------
+ Parsing Dynamic JSON data
+// The value could be a String, a Number, a Boolean, or another Map
+Map<String, Object> jsonResponse = new HashMap<>();
+-------------------------------------------------------------------
+
+## The Modern Alternative: Generics (<T>) ## -- will discuss later 
+
+## TYPE CASTING ## , ## UPCASTING ## , ## DOWNCASTING ## 
+type casting is converting one type to another 
+exapmle is :
+double a = 4.5;
+int b = (int) a;
+System.out.println(b); // we'll get 4 
+
+in class we also use type casting and it divides into 
+1) upcasting 
+2) down casting 
+
+Upcasting is when the child class refers to parent class 
+class A 
+{
+  void a
+  {
+    System.out.println("in A");
+  }
+}
+class B 
+{
+  void b
+  {
+    System.out.println("in B");
+  }
+}
+
+in the main method 
+A obj = new B();  // which is equivalent to write it explicitly like "A obj = (A) new B();
+
+--the advantage is generalizing the class--
+
+Downcasting - is when we want to the general object to have more specific methods (but in the another class)
+Даункастинг — это когда у нас уже ЕСТЬ специфический объект,
+но мы временно смотрим на него через "общее" стекло (родительский класс), 
+и нам нужно убрать это стекло, чтобы снова увидеть и использовать его специфические методы.
+  
+Animal myAnimal = new Dog(); // Сначала сделали upcasting
+
+// Теперь делаем downcasting (требуется явное указание типа в скобках)
+Dog myDog = (Dog) myAnimal;
+
+
+// one of the real implementation is -- 
+List<Animal> clinic = new ArrayList<>();
+clinic.add(new Dog());  // Собака уходит в список как Animal
+clinic.add(new Cat());  // Кошка уходит в список как Animal
+
+// Позже вы обходите список:
+for (Animal myAnimal : clinic) {
+    myAnimal.eat(); // Это могут делать все
+    
+    // Но вам нужно, чтобы лаяли только собаки!
+    // Вы не можете здесь написать new Dog(), ведь объект уже создан ранее.
+    if (myAnimal instanceof Dog myDog) {
+        myDog.bark(); // Здесь downcasting обязателен
+    }
+}
+сли вы контролируете создание объекта в текущей строке кода — пишите Dog dog = new Dog();
+Если объект пришел к вам «извне» (из списка, из метода, из параметров) в виде Animal, 
+но вам нужны фичи Dog — используйте downcasting.
+
+
+  ## WRAPPER CLASSES ## 
+  in java we have primitives and object 
+  primitive -- int, daouble, long, char and so on 
+
+  but this primitives cant be used in come cases like Collections , ArrayList only work with Objects 
+
+    and for this for every primitives we created an Object 
+    for int -- Integer
+    for float -- Float
+    for char -- Character 
+    ... capital letter 
+
+Integer b = 6; // -- this called a autoboxing
+
+int a = b; // AUTOUNBOXING
+ 
+One of the warning here is object can take a null , but null cannot converted to primitives like int 
+    
+Integer activeId = null;
+int id = activeId; // Бабах! NullPointerException (Попытка вызвать null.intValue())
+
+
+
+## ABSTRACT KEYWORD ##
+keyword that used for class and method 
+it allow us not implement the logic but declare it 
+abstract class Cat 
+{
+    public abstract void say(); // only can have an abstract method if it is inside an abstract class 
+
+    public void walk() // can have standard method 
+    {
+      System.out.println("Walking");
+    }
+}
+
+// in the main we can not implement an abstract class 
+
+
+
+
+## INNER CLASS and ANONUMOUS INNER CLASS ## 
+
+
+
+
