@@ -1,0 +1,257 @@
+day 6
+
+## STATIIC VS NON_STATIC IN  JAVA ##
+
+when we talk about static keyword it is mean that in the class it atributes and method are relatred to class itself 
+
+// example 
+class Cat 
+{
+  public static int age;
+  public void meow() 
+  {
+    System.out.println();
+  }
+}
+
+
+// in the main method 
+
+Cat myCat = new Cat();
+Cat.age = 10; // means it is general for class Cat , static allow us to do this 
+
+
+## INNNER CLASS AND ANONIMOUSE INNER CLASS ##
+Inner class :
+class A 
+{
+  int a;
+
+  public void show()
+  {
+  System.out.println("In show");
+  }
+  class B
+  {
+    public void config()
+    {
+     System.out.println("In cofig");
+    }
+
+  }
+}
+
+class Main
+{
+  public static void main(String[] a)
+  {
+    A obj = new A();
+    obj.show();
+
+    B obj1 = new B(); // we cant do this , compiler is not able to find B
+
+    A.B obj1 = new B(); // we simply take an access to B throught A, but it crushes when we create an object of B() -- new B();
+    A.B obj1; // there is no problem in declaring the object 
+
+
+    A.B obj1 = obj.new B(); // this is more proper way of creatin an object B, we use an oblect of A to create 
+                            //an object of B, since it nonstatic 
+    obj1.config(); // now i can call the method of B 
+
+  }
+}
+
+
+--------------------------------------------------------------------------
+
+class A // cant be static 
+{
+  int a;
+
+  public void show()
+  {
+  System.out.println("In show");
+  }
+  static class B // the only way to use a static keyword fo the class , work only for inner class 
+  {
+    public void config()
+    {
+     System.out.println("In cofig");
+    }
+
+  }
+}
+
+class Main
+{
+  public static void main(String[] a)
+  {
+    A obj = new A();
+    obj.show();
+
+    A.B obj1 = new A.B(); // since B is static we can do this way 
+
+  
+  }
+}
+---------------------------------------------
+
+Anonymouse inner class - used when we want to change the behavioure only once and we dont want to create for this a new class  
+
+class A
+{
+  public void show()
+  {
+    System.out.prinln("IN show");
+  }
+}
+
+class Main
+{
+  public static void main(String[] a)
+  {
+    A obj = new A() // means "i want to create an object of A , but i will add another implementation"
+    {
+      public void show()
+      {
+        System.out.println("IN new show ");
+      }
+    };
+    obj.show();
+    
+  }
+}
+---------------------------------------------------
+abstract class A
+{
+  public abstract void show();
+}
+
+class Main
+{
+  public static void main(String[] a)
+  {
+    A obj = new A() // also can implement a abstrct class 
+    {
+      public void show()
+      {
+        System.out.println("IN new show ");
+      }
+    };
+    obj.show();
+    
+  }
+}
+
+## INTERFACES  ## 
+
+interface A
+{
+  int a = 20;  // by default all the variable is final and static , and if the variable is final we need to initialize a variable 
+  String area = "Astana"; // since they static we can directly use this variables -->(in main)
+  
+  void show(); // every method in interface is public and abstact by default 
+  void config();
+
+}
+interface X
+{
+  void run
+  {
+    System.out.println("Running ");
+  }
+}
+
+class B implements A, X  // class actually can implement multiple intefaces 
+{
+  public void show() {
+
+    }
+
+
+    public void config() {
+
+    }
+
+    public void run()
+    {
+
+    }
+}
+
+class Main
+{
+  public static void main(String[] a)
+  {
+    A obj; // we can instantiate an object , that means A is a interface type 
+    obj = new A(); // but every time you create an object it will give you an error 
+    obj = new B(); // we can create an object of B
+
+    System.out.println(A.area);
+
+
+    
+  }
+}
+---------------------------------
+interface can inherit another interface 
+------------------------------------
+Why do we need interface 
+
+consider this example 
+
+import javax.swing.plaf.ComboBoxUI;
+
+class Developer 
+{
+  public void develop(Computer comp) // we stricly set that class Developer onlu develope with laptop, and this actually the problem of tight 
+                                     // coupling , we only dependent on Laptop. we need more higly level, to add also Desktop and Computer 
+  {
+    comp.dev();
+  }
+}
+
+class Laptop implements Computer
+{
+  public void dev()
+  {
+    System.out.println("Developing with laptop");
+  }
+}
+
+// but what if we can give not only the laptop, but also Desktop
+
+class Desktop implements Computer
+{
+  public void dev()
+  {
+    System.out.println("Developing with desktop ");
+  }
+}
+
+// the solution is interface 
+interface Computer 
+{
+  void dev();
+}
+
+class Main
+{
+  public static void main()
+  {
+    Developer AKs = new Developer();
+
+    Computer lap = new Laptop();
+    AKs.develop(lap);
+  }
+}
+
+## CHOOSEING BETWEEN ABSTARCT AND INTERFFACE ## 
+
+
+
+
+
+
+
+
