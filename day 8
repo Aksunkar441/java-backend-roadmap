@@ -1,0 +1,127 @@
+day 8
+
+## EXEPTIONS ## 
+
+types of error are -- compile error, runtime error, logical error 
+
+there are type of statement 
+it can be normal and critical
+example of simple and critical statement :
+int i = 0; 
+int j = 10 / i; // there has to be error
+
+// what we do insted is : 
+
+int i = 0;
+int j = 0;
+try  // also it is better to put critical statement in try catch statement
+{
+  i/j;
+}
+catch(ArithmeticException e) // we can be specific in choosing what exeption we want to catch it can be the genetal Exception class or 
+                   //  ArithmeticException, ArrayIndexOutOfBoundException etc.
+{
+  System.out.println("Something went wrong");
+}
+
+catch(ArrayIndexOutOfBoundException)  // we can also make multiple catch blocks 
+{
+  // proccess the exeption 
+}
+catch(Exeption e) // good practice to place at the bottom most abstact class(parent)
+{
+  // proccess the exeption 
+}
+
+## CLASS HIERAR ## 
+
+Object 
+  |
+Throwable
+      |
+______|______
+|            |
+Error     Exceptions(Runtime(Arithmetic, Array, ...) -- also called unchecked exceptions the Compiler do not force you to handle this exceptions
+                                                       , I/O exception, Sql exception, ... )
+(threadDeath)
+I/O error
+Vrm error
+
+
+## THROW and THROWS KEYWORDS ## 
+
+we use THROW keyword just to generate or call a class with interface Throwable , that we would catch it later in the program 
+
+examples are :
+ // 1. Стандартное исключение (Самый частый случай)
+throw new IllegalArgumentException("Возраст не может быть отрицательным");
+
+// 2. Системная ошибка Error (Технически возможно, но редко нужно на практике)
+throw new AssertionError("Это состояние системы невозможно");
+
+// 3. Ваше собственное исключение (Класс, который вы создали сами)
+throw new UserNotFoundException("Пользователь не найден");
+--------------------------------------------------------------------
+we can also create a custom class 
+
+// 1. Создаем свой класс исключения
+class UserNotFoundException extends Exception {
+    // Конструктор принимает строку и передает ее в Throwable
+    public UserNotFoundException(String message) {
+        super(message); 
+    }
+}
+
+// 2. Использование в коде
+public class Main {
+    public static void main(String[] args) {
+        try {
+            // Просто создаем объект и выбрасываем его
+            throw new UserNotFoundException("Пользователь с ID 404 не найден");
+        } catch (UserNotFoundException e) {
+            System.out.println(e.getMessage()); // Выведет текст сообщения
+        }
+    }
+}
+
+--------------------------------------------------
+We use THROWS keyword(or Ducking Exception) for the hierarcy where the class do not directly implement the try catch logic, BUT warn the other class who 
+are tring to use the method of class to obligaory implement the try catch logic whenever he uses the critical mehtod of class
+
+-- thingd to never do is throws the exception to main class 
+-- printStackTrace() method that show all the path we have called , usefull for debagging 
+
+Зачем нужен throws?Делегирование: Позволяет не писать блоки try-catch прямо внутри текущего метода,
+а переложить ответственность на вызывающий код.
+
+Требование компилятора: Необходим для работы с проверяемыми (checked) исключениями.
+
+Компилятор не пропустит код, если вызывающий метод проигнорирует объявление throws.
+
+Чистота кода: Помогает вынести логику обработки ошибок на более высокий уровень архитектуры приложения.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
