@@ -1,0 +1,339 @@
+day 7 
+
+## PRACTICE TASK ## 
+Abstarct vs Interface 
+
+Problem :  
+🚀 Ваша проектная задача: Экосистема «Умный склад» (Smart Warehouse)
+Представьте, что вы разрабатываете программное обеспечение для управления роботизированным складом. На складе работают разные объекты, и вам нужно спроектировать для них гибкую архитектуру, чтобы система легко масштабировалась в будущем.
+Сущности на складе:
+Робот-грузчик (LoaderBot): Ездит по складу, работает от батареи, подключается к Wi-Fi для получения задач.
+Дрон-инвентаризатор (ScannerDrone): Летает по складу, сканирует штрих-коды, работает от батареи, подключается к Wi-Fi.
+Умная конвейерная лента (SmartConveyor): Стационарная, питается от розетки, подключается к Wi-Fi для отчетов о поломках.
+Планшет менеджера (ManagerTablet): Работает от батареи, подключается к Wi-Fi, используется человеком (не является складским оборудованием в прямом смысле).
+Требования к поведению системы:
+Все элементы складского оборудования (робот, дрон, конвейер) должны иметь серийный номер (serialNumber), инвентарный ID (inventoryId) и метод diagnose(), который по умолчанию выполняет базовую проверку систем, но может быть дополнен для каждого устройства.
+Некоторые объекты (робот, дрон, планшет) работают от аккумулятора, поэтому система управления питанием должна уметь вызывать у них методы checkBatteryLevel() и charge(). Конвейеру это не нужно.
+Все объекты без исключения должны уметь подключаться к локальной сети для передачи данных: метод connectToNetwork().
+🧭 План действий для самостоятельного проектирования:
+Ваша задача — распределить логику так, чтобы избежать дублирования кода (DRY) и не заставить объекты делать то, что им не свойственно.
+Поиск родства (Абстрактный класс): Посмотрите на сущности. Есть ли среди них "родственники", которые делят общее состояние (поля вроде серийного номера) и базовую логику? Создайте для них базовый класс.
+Поиск навыков (Интерфейсы): Выделите способности, которые разбросаны между разными, не родственными типами объектов (например, способность заряжаться от аккумулятора или подключаться к сети).
+Сборка архитектуры: Решите, от чего наследуется каждый из 4-х конкретных классов (LoaderBot, ScannerDrone, SmartConveyor, ManagerTablet) и какие интерфейсы он реализует.
+Как бы вы назвали ваш главный абстрактный класс в этой системе и какие свойства бы в него поместили?
+
+
+## MY SOLUTION ## 
+
+
+
+
+abstract class Scald 
+{
+    private int serialNumber;
+    public int getSerialNumber() {
+        return serialNumber;
+    }
+
+    private String inventoryID;
+
+    public String getInventoryID() {
+        return inventoryID;
+    }
+
+    public Scald(int serialNumber, String inventoryID)
+    {
+        this.inventoryID = inventoryID;
+        this.serialNumber = serialNumber;
+    }
+
+    public void diagnose()
+    {
+        System.out.println("Logic of diagnose...");
+    }
+}
+
+interface ChargeByAccumulator 
+{
+    void checkBatteryLevel();
+    void charge(); 
+}
+
+interface CharegeBySocket
+{
+
+}
+
+interface NetworkConnectable
+{
+    void connectToNetwork();
+}
+
+
+class LoaderBot extends Scald  implements ChargeByAccumulator, NetworkConnectable
+{
+    public LoaderBot(int serialNumber, String inventoryID) {
+        super(serialNumber, inventoryID);
+    }
+    public void diagnose()
+    {
+        
+    }
+
+    public void checkBatteryLevel() {
+       
+    }
+
+
+    public void charge() {
+        
+    }
+
+    public void rideTheSclad()
+    {
+
+    }
+
+
+
+
+
+    public void connectToNetwork() {
+
+
+    }
+
+}
+
+class ScannerDrone extends Scald implements ChargeByAccumulator, NetworkConnectable
+{
+    public ScannerDrone(int serialNumber, String inventoryID) {
+        super(serialNumber, inventoryID);
+    }
+
+    private int serialNumber;
+        public int getSerialNumber() {
+            return serialNumber;
+        }
+
+        private String inventoryID;
+
+        public String getInventoryID() {
+            return inventoryID;
+        }
+
+        public void diagnose()
+        {
+            
+        }
+        public void connectToNetwork()
+        {
+            
+        }
+
+
+        public void checkBatteryLevel()
+        {
+
+        }
+
+
+        public void charge()
+        {
+           
+        }        
+}
+
+class SmartConveyor extends Scald implements CharegeBySocket, NetworkConnectable
+{
+    public SmartConveyor(int serialNumber, String inventoryID) {
+        super(serialNumber, inventoryID);
+    }
+
+    public void connectToNetwork() // TO DO 
+    {
+        
+    }
+}
+
+class ManagerTablet implements ChargeByAccumulator, NetworkConnectable
+{
+    public void checkBatteryLevel() 
+    {
+
+    }
+
+    public void charge() 
+    {
+
+    }
+
+    public void connectToNetwork() {
+
+    }
+
+}
+
+class Main 
+{
+    public static void main(String[] a)
+    {
+        
+    }
+}
+
+
+
+------------------------------------------------------------------------
+Gemini rate :
+🟢 Что сделано великолепно (Плюсы)
+Архитектура ManagerTablet безупречна: Планшет не наследует складской класс Scald, но при этом реализует нужные интерфейсы (ChargeByAccumulator, NetworkConnectable). Это чистый, каноничный ООП.
+Выделение сети в интерфейс: Интерфейс NetworkConnectable добавлен абсолютно правильно и внедрен всем, кому он нужен.
+Идеальный класс LoaderBot: В нем ты полностью убрал дублирование полей, оставил только конструктор с super(...) и методы интерфейсов. Вот этот класс написан на 10 из 10.
+
+Понимание интерфейсов	5 / 5	Идеально разделены контракты сети и зарядки.
+Понимание наследования	3 / 5	В одном классе сделал правильно, в двух других забыл удалить дубликаты полей.
+Чистота кода (Clean Code)	4 / 5	Структура хорошая, но мешают пустые методы и опечатки в именах.
+
+## ENUMS(ENUMERATORS) ## 
+in Java is a special data type used to define a fixed, type-safe collection of constants
+Under the hood, Java enums are full-featured classes that implicitly extend java.lang.Enum
+
+
+To define a basic enum, use the enum keyword instead of class or interface
+public enum Level {
+    LOW, 
+    MEDIUM, 
+    HIGH
+}
+
+Level currentLevel = Level.MEDIUM;
+
+// Enums work natively with switch statements
+switch (currentLevel) {
+    case LOW -> System.out.println("Low level");
+    case MEDIUM -> System.out.println("Medium level");
+    case HIGH -> System.out.println("High level");
+}
+
+Because every enum automatically extends java.lang.Enum, it inherits several built-in methods
+values(): Returns an array containing all the constants in the enum.
+valueOf(String name): Converts a matching string precisely into its corresponding enum constant
+ordinal(): Returns the sequential index position of the constant, starting at 0.
+name(): Returns the exact string name of the constant.
+
+------------------------
+java enums can contain fields, methods, and constructors. This lets you attach state and behavior directly to your constants
+
+ public enum TrafficLight {
+    RED("Stop"), 
+    YELLOW("Caution"), 
+    GREEN("Go");
+
+    // Private field to hold state
+    private final String action;
+
+    // Constructors must be private. Java enforces this automatically.
+    private TrafficLight(String action) {
+        this.action = action;
+    }
+
+    // Public getter method
+    public String getAction() {
+        return this.action;
+    }
+}
+
+// in main method 
+String redAction = TrafficLight.RED.getAction(); // Returns "Stop"
+
+## ANNITATION in JAVA ## 
+
+class A 
+{
+  public void showTheDataWhichBelongsThisClass()  // as we see the method name is very large and we can simply write wrong name in
+                                                  // the B class
+                                                  // to solve it we need to show the compiler our intension in this we ll use @Override
+  {
+    System.out.println("In A show");
+  }
+}
+
+class B extends A
+{
+  @Override  // solution for this annotatioin the intension for this 
+  public void showTheDataWhichBelongsThisClass()
+    {
+      System.out.println("In A show");
+    }
+}
+
+class Main 
+{
+  public static void main(String a[])
+  {
+    B obj = new B();
+    obj.show();
+  }
+}
+
+
+## FUNTIONAL INTERFACE ## 
+
+Functional inteface - is inteface with only one single method , the main reason we seperate standard interace with functional is that 
+we can use lambda with functional interface 
+
+@FunctionalInterface // we need to warn the compiler that we will only have single method 
+interface A
+{
+  void show();
+}
+
+@FunctionalInterface
+interface B
+{
+  int showInt(int i, int j)
+  {
+    return i + j;
+  }
+}
+
+// in the main method
+
+A obj = new A(){
+    public void show()
+    {
+      System.out.println("IN Anonumouse ");
+    }
+};
+
+A objWithLambda = () -> System.out.println("more shorter "); // uasge of Lambda, art of trying not verbosing in Java
+objWithLambda.show();
+
+// now we will try with return 
+
+B obj1 = (i, j) -> i * j;
+int res = obj1.showInt
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
