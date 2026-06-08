@@ -1,0 +1,98 @@
+day 10
+
+race condition - is the concept where two  threads try to implement the thing at the same time 
+example is like we trying to withdraw the money in bank symoltatiously and system do not know what to do with this 
+operations 
+
+or in the program level this happense a lot 
+
+like we trying to mute the object with two thread 
+int i = 0;
+two threads try mute the i but this cause the race condititon where only single thread made real change 
+
+we can actually correct it using the synchronized keyword that shut down one thread until another thread is not implemented
+
+example in code :
+
+class Counter
+{
+  int count;
+  public synchronized void increment() // here we used this keyword 
+  {
+    count++;
+  }
+}
+
+class Main
+{
+    public static void main(String a[]) throws InterruptedException
+    {
+
+      Counter cnt = new Counter();
+ 
+        Runnable obj1 =  () -> 
+            {
+                for (int i = 0;i<1000;i++)
+                {
+                    cnt.increment();
+                }
+            };
+
+        Runnable obj2 = () -> 
+            {
+                for (int i = 0;i<1000;i++)
+                {
+                    cnt.increment();
+                }
+            };
+
+
+        
+        Thread t1 = new Thread(obj1);
+        Thread t2 = new Thread(obj2);
+
+        
+
+        t1.start();
+        t2.start();
+
+        t1.join();
+        t2.join();
+
+        System.out.println(cnt.count); // output alwayse will be the same 1000 + 1000
+    }
+}
+
+-----------------------------------------------
+## THREAD STATES ## 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
