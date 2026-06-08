@@ -1,0 +1,206 @@
+day 9
+
+## TRY with RESOURSES ## 
+
+example of code
+
+int i = 0;
+
+try 
+{
+  int res = 18 / 0;
+  System.out.println("BYE"); // once you get the exception here we won't get this message
+} 
+catch(Exception e)
+{
+  System.out.println("WRONG!");
+}
+finally // thi will execute alwayse , good for closing the resources , i will show in the bottom
+{
+  System.out.println("BYE alwayse"); //exectute it alwayse 
+}
+------------------------------------------------
+
+what does mean close the resources for the final block  - is safety purpose operation for the closing the resources after 
+we used it , it can be files, databse connection, network sockets 
+
+example with closing the resource:
+int num = 0;
+BufferedfReader bf = null;
+try 
+{
+  bf = new(BufferedReader(new InputStreamReader(System.in);));
+  num = Integer.parseInt(bf.readLine());
+  System.out.println(num);
+}
+finally
+{
+  bf.close();
+}
+--------------------------------------------------
+
+and we can write less code using TRT WITH RESOURCES 
+
+try(BufferdReader bf = new(BufferedReader(new InputStreamReader(System.in)))) // advantage is once the try will get the resources it will 
+{                                                                              // close it automatically 
+  num = Integer.parseInt(bf.readLine());
+  System.out.println(num);
+}
+
+## THREADS  ## 
+
+thread is unit of operation that can be executed in cpu 
+it is like small operations that makes the whole task 
+the cpu execute it very fast doing the units of task that it seems it working together 
+
+example if code : 
+class A extends Thread
+{
+    public void run()
+    {
+        for (int i = 0;i<5;i++)
+        {
+            System.out.println("HI");
+        }
+        
+    }
+}
+
+class B extends Thread
+{
+    public void run() // we have to implement our-self the run method 
+    {
+        for (int i = 0;i<5;i++)
+        {
+            System.out.println("Hello");
+        }
+        
+    }
+}
+
+class Main
+{
+    public static void main(String a[])
+    {
+ 
+        A obj1 = new A();
+        B obj2 = new B();
+
+        obj1.start(); // create a new thread, jvm call the os it place this thread in the stack 
+
+                        // Важно: Потоки еще не выполняются. Они просто стоят в очереди и ждут, 
+                        //когда планировщик выделит им время на процессоре.
+
+                         // Выделение кванта: Планировщик видит поток obj1,
+                         // выделяет ему ядро процессора и крошечный отрезок времени (например, 10–20 миллисекунд).
+
+                          // Выполнение: Поток obj1 просыпается, заходит в свой метод run() и начинает быстро крутить цикл for,
+                          // выводя на экран "HI".
+
+                            //Прерывание (Вытеснение): Как только выделенные миллисекунды истекают, 
+                            //планировщик ОС принудительно останавливает поток obj1 прямо посреди его работы (например, после 3-й итерации цикла). 
+                            //ОС сохраняет текущее состояние потока (значение переменной i, счетчик команд) в память. 
+                            //Это называется переключением контекста (Context Switch)
+
+                           //Переключение на другой поток: Планировщик отдает это же ядро процессора потоку obj2.
+                           //Тот просыпается и успевает напечатать несколько "Hello", пока его квант времени тоже не закончится.
+
+                            //Этот процесс повторяется циклически и на огромной скорости, пока оба потока не завершат свои циклы.
+                              
+        obj2.start();
+    }
+}
+----------------------------------------
+the output : 
+HI
+HI
+HI
+Hello
+Hello
+Hello
+Hello
+HI
+HI
+Hello
+
+it is not working parralel 
+
+## THREADS PRIORITY ## 
+we can not tell the compler to work in different way , but we can optimize the way it prior and allocate the time or resource
+many things to text but i coded my self 
+class A implements Runnable
+{
+    public void run()
+    {
+        for (int i = 0;i<5;i++)
+        {
+            System.out.println("HI");
+            try {
+                Thread.sleep(10);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }
+        
+    }
+}
+
+class B implements Runnable
+{
+    public void run()
+    {
+        for (int i = 0;i<5;i++)
+        {
+            System.out.println("Hello");
+            try {
+                Thread.sleep(10);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }
+
+        
+    }
+}
+
+class Main
+{
+    public static void main(String a[])
+    {
+ 
+        Runnable obj1 =  () ->  
+            {
+                for (int i = 0;i<5;i++)
+                {
+                    System.out.println("HI");
+                    try {Thread.sleep(10);} 
+                    catch (InterruptedException e) { e.printStackTrace();} // mandatory try-catch 
+                }
+            };
+
+        Runnable obj2 = () -> 
+            {
+                for (int i = 0;i<5;i++)
+                {
+                    System.out.println("Hello");
+                    try {Thread.sleep(10);} 
+                    catch (InterruptedException e) { e.printStackTrace();}
+                }
+            };
+
+
+        
+        Thread t1 = new Thread(obj1); // we create a multiple threads for the object that it can be started and use the Runnable interface
+        Thread t2 = new Thread(obj2);
+
+        t2.setPriority(10);
+
+        t1.start();
+        t2.start();
+    }
+}
+
+
+
+
+
